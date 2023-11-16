@@ -66,8 +66,8 @@
 #define SAADC_SAMPLES_IN_BUFFER         50                   /* 50 ms de bir 100 sample = 2khz ,  100us-8000 sample*/ 
 #define SAADC_SAMPLE_RATE               300                   //550 ye 10 sample putty  /**< SAADC sample rate in us. */               
 
-#define LED1 17 //////////// P0.06
-#define LED2 18 //////////// P0.07
+#define LED1 6 //////////// P0.06
+#define LED2 7 //////////// P0.07
 
 BLE_LBS_DEF(m_lbs);  
 BLE_NUS_DEF(m_nus, NRF_SDH_BLE_TOTAL_LINK_COUNT);                                   /**< BLE NUS service instance. */
@@ -624,7 +624,7 @@ void saadc_change_to_channel_0(void)
 }
 
 // This function takes three integers like 12 34 and 45 and concatenates them into 123445
-int concatinate_ints(int int1, int int2, int int3) {
+int concatenate_ints(int int1, int int2, int int3) {
   char str1[4];
   char str2[4];
   char str3[4];
@@ -640,23 +640,29 @@ int concatinate_ints(int int1, int int2, int int3) {
   return atoi(resultstr);
 }
 
-// Function to parse a ble input array of two digit hex numbers (inputed as ints up to FF=255) and assign them to our LED timing pointers
-/*
-void bin2timing(int ble_input, int* interval_ptr, int* duty1_ptr, int* duty2_ptr, int* period_ptr) //convert ble input to timing parameters for the led_timing function
+// Function to parse a ble input array of two digit hex numbers (inputed as ints
+// up to FF=255) and assign them to our LED timing pointers
+void bin2timing(int ble_input[], int *interval_ptr, int *duty1_ptr,
+                int *duty2_ptr,
+                int *period_ptr) // convert ble input to timing parameters for
+                                 // the led_timing function
 {
-  //cant do anything with this at the moment I have to figure out how the ble sends over data
+  *interval_ptr = concatenate_ints(ble_input[0], ble_input[1], ble_input[2]);
+  *duty1_ptr = ble_input[3];
+  *duty2_ptr = ble_input[4];
+  *period_ptr = ble_input[5] + ble_input[6] + ble_input[7];
 }
-*/
+
 
 //This function times the LED on and off based on the inputted parameters.
 //By default the time interval is 4ms with 10kHz LED frequencies and both LEDs have a 25% duty cycle
 //test if it interrupts the SAADC reading!
 void led_timing(int full_interval_us, int duty1, int duty2, int period_us)
 {
-    full_interval_us = 4000;
-    duty1 = 25;
-    duty2 = 25;
-    period_us = 100;
+    //full_interval_us = 10000; //10 ms
+    //duty1 = 40;
+    //duty2 = 20;
+    //period_us = 700; //1428 Hz
 
     int led_1_on_time_us, led_1_cycles, led_2_cycles, led_2_on_time_us, leds_off_end_time_us, i;
 
@@ -671,11 +677,14 @@ void led_timing(int full_interval_us, int duty1, int duty2, int period_us)
       nrf_delay_us(period_us/2); //to produce the correct frequency the device is toggled every half period
     }
 
+    nrf_gpio_pin_clear(LED1); //Clear all LED pins
+    nrf_gpio_pin_clear(LED2);
+
     led_2_on_time_us = (full_interval_us*duty2)/100; //Define time interval of LED2 based on duty cycle and full interval
-    led_1_cycles = 2*led_2_on_time_us/period_us;
+    led_2_cycles = 2*led_2_on_time_us/period_us;
     for(i=1; i<=led_2_cycles; i++)
     {
-      nrf_gpio_pin_toggle(LED1);
+      nrf_gpio_pin_toggle(LED2);
       nrf_delay_us(period_us/2);
     }
 
@@ -714,7 +723,7 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
         NRF_LOG_DEBUG("Received data from BLE NUS. Writing data on UART.");
         NRF_LOG_HEXDUMP_DEBUG(p_evt->params.rx_data.p_data, p_evt->params.rx_data.length);
 
-        switch((char)p_evt->params.rx_data.p_data[0]) // Say you have submitted 0x 01-02-03 over NUS, only the [0]th entry, 01 determines the case
+        switch((int)p_evt->params.rx_data.p_data[0]) // Say you have submitted 0x 01-02-03 over NUS, only the [0]th entry, 01 determines the case
         {
 
         //if 0x01 is sent over BLE turn LED 1 on
@@ -748,8 +757,31 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
          nrf_gpio_pin_set(LED2); // LED 2 OFF
         break;
 
+        //ble led cycle case 0x4A
+        case 74: ;
+            int ble_array[15], full_interval_us, duty1, duty2, period_us; //initialize the variables
+
+            //save input messages to ble_array
+            for (int i = 0; i < 8; i++) {
+                  ble_array[i] = (int)p_evt->params.rx_data.p_data[i+1];
+                }  
+
+            //do 10 ble flashing intervals      
+            uint8_t j = 0;
+            while(j < 10) 
+            {
+                //convert ble to timing parameters
+                bin2timing(ble_array, &full_interval_us, &duty1, &duty2, &period_us);
+                //use timing parameters to run led controls
+                led_timing(full_interval_us,  duty1,  duty2,  period_us);
+
+                j++;
+            }
+
+        break;
+
         //start the LED timer code
-        //int full_interval_us, duty1, duty2, period_us; //initialize the variables
+        
 
 
         }
