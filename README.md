@@ -19,6 +19,7 @@ Note these commands are in Hex format:
 05 - change the SAADC to channel AIN1 at P0.03
 06 - change the SAADC to channel AIN2 at P0.04
 07 - change the SAADC to channel AIN3 at P0.05
+08 - change the SAADC to channel AIN4 at P0.28
 
 Example:
 I use "4A 00 0A 00 28 14 C8 C8 C8" to give the following parameters:

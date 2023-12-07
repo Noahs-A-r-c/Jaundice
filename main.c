@@ -553,13 +553,14 @@ void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
     }
 }
 
-// Change the broadcasted saadc channel to channel 3 over uart
-void saadc_change_to_channel_3(void)
+// Change the broadcasted saadc channel to channel 4 over uart
+void saadc_change_to_channel_4(void)
 {
     nrf_drv_saadc_channel_uninit(0);
     nrf_drv_saadc_channel_uninit(1);
     nrf_drv_saadc_channel_uninit(2);
     nrf_drv_saadc_channel_uninit(3);
+    nrf_drv_saadc_channel_uninit(4);
     nrf_drv_saadc_uninit();
     
     ret_code_t err_code;
@@ -572,6 +573,52 @@ void saadc_change_to_channel_3(void)
     nrf_saadc_channel_config_t channel_1_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);     //P0.03
     nrf_saadc_channel_config_t channel_2_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);     //P0.04
     nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN3);     //P0.05
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN4);     //P0.28
+
+    channel_0_config.gain = NRF_SAADC_GAIN1_4;
+    channel_0_config.reference = NRF_SAADC_REFERENCE_VDD4;	
+    channel_1_config.gain = NRF_SAADC_GAIN1_4;
+    channel_1_config.reference = NRF_SAADC_REFERENCE_VDD4;	
+    channel_2_config.gain = NRF_SAADC_GAIN1_4;
+    channel_2_config.reference = NRF_SAADC_REFERENCE_VDD4;	
+    channel_3_config.gain = NRF_SAADC_GAIN1_4;
+    channel_3_config.reference = NRF_SAADC_REFERENCE_VDD4;	
+	
+    err_code = nrf_drv_saadc_init(&saadc_config, saadc_callback);
+    APP_ERROR_CHECK(err_code);
+
+    // CHANGE: Default pin for SAADC is determined here by which channel_ _config comes last, default right now is AIN1 P0.03
+    err_code = nrf_drv_saadc_channel_init(4, &channel_4_config);
+    APP_ERROR_CHECK(err_code);
+    
+    
+    err_code = nrf_drv_saadc_buffer_convert(m_buffer_pool[0],SAADC_SAMPLES_IN_BUFFER);
+    APP_ERROR_CHECK(err_code);   
+    err_code = nrf_drv_saadc_buffer_convert(m_buffer_pool[1],SAADC_SAMPLES_IN_BUFFER);
+    APP_ERROR_CHECK(err_code);
+}
+
+// Change the broadcasted saadc channel to channel 3 over uart
+void saadc_change_to_channel_3(void)
+{
+    nrf_drv_saadc_channel_uninit(0);
+    nrf_drv_saadc_channel_uninit(1);
+    nrf_drv_saadc_channel_uninit(2);
+    nrf_drv_saadc_channel_uninit(3);
+    nrf_drv_saadc_channel_uninit(4);
+    nrf_drv_saadc_uninit();
+    
+    ret_code_t err_code;
+	
+    nrf_drv_saadc_config_t saadc_config = NRF_DRV_SAADC_DEFAULT_CONFIG;
+    saadc_config.resolution = NRF_SAADC_RESOLUTION_12BIT; // Change resolution at will
+	
+    ////// CHANGE: uses AIN0 AIN1 AIN2 and AIN3 at the moment, pin P0.02 P0.03 P0.04 and P0.05 respectively
+    nrf_saadc_channel_config_t channel_0_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN0);     //P0.02
+    nrf_saadc_channel_config_t channel_1_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);     //P0.03
+    nrf_saadc_channel_config_t channel_2_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);     //P0.04
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN3);     //P0.05
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN4);     //P0.28
 
     channel_0_config.gain = NRF_SAADC_GAIN1_4;
     channel_0_config.reference = NRF_SAADC_REFERENCE_VDD4;	
@@ -603,6 +650,7 @@ void saadc_change_to_channel_2(void)
     nrf_drv_saadc_channel_uninit(1);
     nrf_drv_saadc_channel_uninit(2);
     nrf_drv_saadc_channel_uninit(3);
+    nrf_drv_saadc_channel_uninit(4);
     nrf_drv_saadc_uninit();
     
     ret_code_t err_code;
@@ -615,6 +663,7 @@ void saadc_change_to_channel_2(void)
     nrf_saadc_channel_config_t channel_1_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);     //P0.03
     nrf_saadc_channel_config_t channel_2_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);     //P0.04
     nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN3);     //P0.05
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN4);     //P0.28
 
     channel_0_config.gain = NRF_SAADC_GAIN1_4;
     channel_0_config.reference = NRF_SAADC_REFERENCE_VDD4;	
@@ -646,6 +695,7 @@ void saadc_change_to_channel_1(void)
     nrf_drv_saadc_channel_uninit(1);
     nrf_drv_saadc_channel_uninit(2);
     nrf_drv_saadc_channel_uninit(3);
+    nrf_drv_saadc_channel_uninit(4);
     nrf_drv_saadc_uninit();
     
     ret_code_t err_code;
@@ -658,6 +708,7 @@ void saadc_change_to_channel_1(void)
     nrf_saadc_channel_config_t channel_1_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);     //P0.03
     nrf_saadc_channel_config_t channel_2_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);     //P0.04
     nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN3);     //P0.05
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN4);     //P0.28
 
     channel_0_config.gain = NRF_SAADC_GAIN1_4;
     channel_0_config.reference = NRF_SAADC_REFERENCE_VDD4;	
@@ -690,6 +741,7 @@ void saadc_change_to_channel_0(void)
     nrf_drv_saadc_channel_uninit(1);
     nrf_drv_saadc_channel_uninit(2);
     nrf_drv_saadc_channel_uninit(3);
+    nrf_drv_saadc_channel_uninit(4);
     nrf_drv_saadc_uninit();
     
     ret_code_t err_code;
@@ -702,6 +754,7 @@ void saadc_change_to_channel_0(void)
     nrf_saadc_channel_config_t channel_1_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN1);     //P0.03
     nrf_saadc_channel_config_t channel_2_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);     //P0.04
     nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN3);     //P0.05
+    nrf_saadc_channel_config_t channel_3_config = NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN4);     //P0.28
 
     channel_0_config.gain = NRF_SAADC_GAIN1_4;
     channel_0_config.reference = NRF_SAADC_REFERENCE_VDD4;	
@@ -868,6 +921,10 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
         //changes to SAADC channel AIN3 at P0.05
         saadc_change_to_channel_3();
         break;
+        case 08: 
+        //changes to SAADC channel AIN4 at P0.28
+        saadc_change_to_channel_4();
+        break;        
         //all other cases LEDs turn off
         case 0:
          nrf_gpio_pin_clear(LED1); // LED 1 OFF
