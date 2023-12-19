@@ -1,7 +1,7 @@
 Output/Release/Obj/ble_app_uart_pca10040_s132/bsp_btn_ble.o: \
- C\:\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp_btn_ble.c \
- C\:\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp_btn_ble.h \
- C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42a/include/stdint.h \
+ C:\Users\harir\OneDrive\Documents\Research\HJ\nrf5_sdk_17.1.0_ddde560\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp_btn_ble.c \
+ C:\Users\harir\OneDrive\Documents\Research\HJ\nrf5_sdk_17.1.0_ddde560\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp_btn_ble.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.68/include/stdint.h \
  ../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
@@ -26,15 +26,15 @@ Output/Release/Obj/ble_app_uart_pca10040_s132/bsp_btn_ble.o: \
  ../../../../../../modules/nrfx/mdk/nrf52_name_change.h \
  ../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- C\:\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp.h \
- C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42a/include/stdbool.h \
+ C:\Users\harir\OneDrive\Documents\Research\HJ\nrf5_sdk_17.1.0_ddde560\nRF5_SDK_17.1.0_ddde560\components\libraries\bsp\bsp.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.68/include/stdbool.h \
  ../../../../../../components/boards/boards.h \
  ../../../../../../modules/nrfx/hal/nrf_gpio.h \
  ../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../integration/nrfx/nrfx_config.h ../config/sdk_config.h \
  ../../../../../../modules/nrfx/drivers/nrfx_common.h \
- C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42a/include/stddef.h \
- C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42a/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.68/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.68/include/__crossworks.h \
  ../../../../../../modules/nrfx/mdk/nrf_peripherals.h \
  ../../../../../../modules/nrfx/mdk/nrf52832_peripherals.h \
  ../../../../../../integration/nrfx/nrfx_glue.h \
@@ -54,7 +54,7 @@ Output/Release/Obj/ble_app_uart_pca10040_s132/bsp_btn_ble.o: \
  ../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../components/libraries/util/app_error.h \
- C\:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.42a/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 5.68/include/stdio.h \
  ../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../components/libraries/util/app_error_weak.h \
